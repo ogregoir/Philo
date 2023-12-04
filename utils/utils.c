@@ -43,3 +43,8 @@ int	ft_time_today(void)
 		i = (((time.tv_sec * 1000) + (time.tv_usec / 1000)) % (3600 * 1000));
 	return (i);
 }
+
+void	print_status(unsigned long time, int philo, char *str)
+{
+	printf("%lu philo_n°%d %s\n", time, philo, str);
+}

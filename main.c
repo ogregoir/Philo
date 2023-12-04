@@ -11,42 +11,19 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-
-t_philo	*ft_parse(t_global *data, t_philo *philo)
-{
-	int		i;
-
-	i = 0;
-	philo->philo_n = 0;
-	philo->fork = 1;
-	if (data->philo_nbr == 1)
-		return (0);
-	while (i < data->philo_nbr)
-	{
-		philo[i].philo_n = i + 1;
-		philo[i].fork = 1;
-		i++;
-	}
-	return (philo);
-}
-
+/*
 void	ft_printf_struct(t_global *data, t_philo *philo)
 {
 	printf("DATA philo nbr %d\n", data->philo_nbr);
 	printf("DATA time_to_die %d\n", data->time_to_die);
 	printf("DATA time_to_eat %d\n", data->time_to_eat);
 	printf("DATA time_to_sleep %d\n", data->time_to_sleep);
-	printf("PHILO fork %d\n", philo[0].fork);
-	printf("PHILO fork %d\n", philo[1].fork);
-	printf("PHILO fork %d\n", philo[2].fork);
-	printf("PHILO fork %d\n", philo[3].fork);
-	printf("PHILO fork %d\n", philo[4].fork);
 	printf("PHILO n %d\n", philo[0].philo_n);
 	printf("PHILO n %d\n", philo[1].philo_n);
 	printf("PHILO n %d\n", philo[2].philo_n);
 	printf("PHILO n %d\n", philo[3].philo_n);
 	printf("PHILO n %d\n", philo[4].philo_n);
-}
+}*/
 
 int	ft_init(t_global *data, char **argv)
 {
@@ -54,6 +31,8 @@ int	ft_init(t_global *data, char **argv)
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
+	if (argv[5] != NULL)
+		data->nbr_must_eat = ft_atoi(argv[5]);
 	if (ft_verif_num(argv) == 1)
 		return (1);
 	return (0);
@@ -66,7 +45,7 @@ int	main(int argc, char **argv)
 	int			i;
 
 	i = 0;
-	if (argc != 5)
+	if (argc < 5 || argc > 6)
 	{
 		printf("not enough arguments\n");
 		return (1);
@@ -81,7 +60,7 @@ int	main(int argc, char **argv)
 	philo = malloc(sizeof(t_philo) * (data->philo_nbr + 1));
 	philo = ft_parse(data, philo);
 	create_philo(data, philo);
-	while (i <= data->philo_nbr)
+	while (i < data->philo_nbr)
 	{
 		pthread_join(philo[i].thd, NULL);
 		i++;
