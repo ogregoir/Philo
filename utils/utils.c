@@ -48,3 +48,11 @@ void	print_status(unsigned long time, int philo, char *str)
 {
 	printf("%lu philo_n°%d %s\n", time, philo, str);
 }
+
+int	convert_time(t_philo *philo)
+{
+	int	time;
+
+	time = (philo->data->time_today) - (philo->data->time_to_start);
+	return (time);
+}

@@ -27,6 +27,8 @@ t_philo	*ft_parse(t_global *data, t_philo *philo)
 		pthread_mutex_init(&fork[i], NULL);
 		philo[i].philo_n = i + 1;
 		philo[i].eat = 0;
+		philo[i].last_meal = 0;
+		philo[i].must_eat = 0;
 		i++;
 	}
 	return (philo);
@@ -39,9 +41,7 @@ void	create_philo(t_global *data, t_philo *philo)
 	i = 0;
 	while (i < data->philo_nbr)
 	{
-		printf("i = %d n = %d\n", i, philo[i].philo_n);
 		pthread_create(&philo[i].thd, NULL, start_routine, philo + i);
-		printf("i = %d n = %d\n", i, philo[i].philo_n);
 		i++;
 	}
 }
@@ -53,10 +53,10 @@ int		take_fork(t_philo *philo)
 	else
 		pthread_mutex_lock(&philo->fork[philo->philo_n]);
 	philo->data->time_today = ft_time_today();
-	print_status(philo->data->time_today, philo->philo_n, "has taken a fork\n");
+	print_status(convert_time(philo), philo->philo_n, "has taken a fork\n");
 	pthread_mutex_lock(&philo->fork[philo->philo_n - 1]);
 	philo->data->time_today = ft_time_today();
-	print_status(philo->data->time_today, philo->philo_n, "has taken a fork\n");
+	print_status(convert_time(philo), philo->philo_n, "has taken a fork\n");
 	return (0);
 }
 
