@@ -50,11 +50,12 @@ typedef struct s_global
 int		ft_verif_num(char **argv);
 int		ft_time_today(void);
 int		convert_time(t_philo *philo);
+void	ft_my_usleep(t_philo *philo, unsigned long time_wait);
 
 	/*PARSE*/
 t_philo	*ft_parse(t_global *data, t_philo *philo);
 void	create_philo(t_global *data, t_philo *philo);
-int		take_fork(t_philo *philo);
+void	take_fork(t_philo *philo);
 void	return_fork(t_philo *philo);
 
 	/*ROUTINE*/
@@ -62,5 +63,7 @@ void	*start_routine(void *arg);
 
 void	print_status(unsigned long time, int philo, char *str);
 int		philo_die(t_philo *philo);
+
+int	philo_must_eat(t_philo *philo);
 
 #endif

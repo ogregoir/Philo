@@ -26,31 +26,23 @@ void	ft_printf_struct(t_global *data, t_philo *philo)
 }*/
 int	philo_must_eat(t_philo *philo)
 {
-	int count;
 	int	i;
+	int	count;
 
+	i = 0;
 	count = 0;
-	while (i < philo->data->philo_nbr)
+	if (philo->data->nbr_must_eat != 0)
 	{
-		if (philo->data->nbr_must_eat == philo->must_eat)
-			count++;
-		i++;
-	}
-	if (philo->data->philo_nbr == count)
+		while (philo->data->philo_nbr > i)
+		{
+			if (philo->data->nbr_must_eat == philo->must_eat)
+				count++;
+			i++;
+		}
+		if (philo->data->philo_nbr == count)
 			return (0);
-	return (1);
-}
-
-int	philo_die(t_philo *philo)
-{
-	if ((philo->eat == 0 || philo_must_eat(philo) == 1) && \
-		philo->data->time_today >= philo->data->time_to_eat)
-	{
-		philo->status = 1;
-		print_status(convert_time(philo), philo->philo_n, "is dead");
-		return (1);
 	}
-	return (0);
+	return (1);
 }
 
 void	ft_dead(t_philo *philo)
@@ -60,20 +52,26 @@ void	ft_dead(t_philo *philo)
 	i = 0;
 	while (1)
 	{
-		philo->data->time_today = ft_time_today();
+		i = 0;
+		if (philo_must_eat(philo) == 0)
+			break ;
 		while (i < philo->data->philo_nbr)
 		{
-			if (philo->eat == 0 && philo->data->time_today >= philo->data->time_to_eat)
+			if (philo->eat == 0)
 			{
-				if (philo_must_eat(philo) == 1)
+				if ((philo->last_meal + philo->data->time_to_die > philo->data->time_today))
+				{
+					usleep(20);
+					//philo->data->time_today = ft_time_today();
+					print_status(convert_time(philo), philo->philo_n, "is died\n");
+					philo->status = 1;
 					return ;
-				if (philo->eat == 1 && philo->last_meal <= (philo->data->time_today + philo->data->time_to_eat))
-					return ;
-				philo->status = 1;
+				}
 			}
 			i++;
 		}
 	}
+	return ;
 }
 
 int	ft_init(t_global *data, char **argv)
@@ -96,9 +94,7 @@ int	main(int argc, char **argv)
 {
 	t_global	*data;
 	t_philo		*philo;
-	int			i;
 
-	i = 0;
 	if (argc < 5 || argc > 6)
 	{
 		printf("not enough arguments\n");
@@ -114,12 +110,7 @@ int	main(int argc, char **argv)
 	philo = malloc(sizeof(t_philo) * (data->philo_nbr + 1));
 	philo = ft_parse(data, philo);
 	create_philo(data, philo);
-	ft_dead(philo);
-	while (i < data->philo_nbr)
-	{
-		pthread_join(philo[i].thd, NULL);
-		i++;
-	}
+	ft_dead(philo);	
 	//ft_printf_struct(data, philo);
 	return (0);
 }

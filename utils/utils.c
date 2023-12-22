@@ -46,7 +46,7 @@ int	ft_time_today(void)
 
 void	print_status(unsigned long time, int philo, char *str)
 {
-	printf("%lu philo_n°%d %s\n", time, philo, str);
+	printf("%lu philo_n°%d %s", time, philo, str);
 }
 
 int	convert_time(t_philo *philo)
@@ -55,4 +55,16 @@ int	convert_time(t_philo *philo)
 
 	time = (philo->data->time_today) - (philo->data->time_to_start);
 	return (time);
+}
+
+void	ft_my_usleep(t_philo *philo, unsigned long time_wait)
+{
+	int waiting;
+
+	waiting = philo->data->time_today - (philo->data->time_today - time_wait);
+	while (waiting != 0)
+	{
+		usleep(500);
+		waiting -= 5;
+	}
 }

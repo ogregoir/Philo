@@ -46,18 +46,24 @@ void	create_philo(t_global *data, t_philo *philo)
 	}
 }
 
-int		take_fork(t_philo *philo)
+void	take_fork(t_philo *philo)
 {
 	if (philo->philo_n == philo->data->philo_nbr)
 		pthread_mutex_lock(&philo->fork[0]);
 	else
 		pthread_mutex_lock(&philo->fork[philo->philo_n]);
-	philo->data->time_today = ft_time_today();
 	print_status(convert_time(philo), philo->philo_n, "has taken a fork\n");
+	philo->data->time_today = ft_time_today();
+	if (philo->status == 1)
+		return ;
+	if (philo->data->philo_nbr == 1)
+	{
+		print_status(convert_time(philo), philo->philo_n, "is died\n");
+		exit(EXIT_SUCCESS);
+	}
 	pthread_mutex_lock(&philo->fork[philo->philo_n - 1]);
 	philo->data->time_today = ft_time_today();
 	print_status(convert_time(philo), philo->philo_n, "has taken a fork\n");
-	return (0);
 }
 
 void	return_fork(t_philo *philo)
