@@ -33,38 +33,32 @@ int	ft_verif_num(char **argv)
 	return (0);
 }
 
-int	ft_time_today(void)
+unsigned long	ft_time_today(void)
 {
 	struct timeval	time;
 	unsigned long	i;
 
 	i = 0;
 	if (gettimeofday(&time, NULL) == 0)
-		i = (((time.tv_sec * 1000) + (time.tv_usec / 1000)) % (3600 * 1000));
+		i = ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 	return (i);
 }
 
-void	print_status(unsigned long time, int philo, char *str)
+unsigned long	ft_time_today2(t_philo *philo)
 {
-	printf("%lu philo_n°%d %s", time, philo, str);
+	return (ft_time_today() - philo->data->time_to_start);
 }
 
-int	convert_time(t_philo *philo)
+void	print_status(t_philo *philo, int philosopher, char *str)
 {
-	int	time;
-
-	time = (philo->data->time_today) - (philo->data->time_to_start);
-	return (time);
+	printf("%lu philo n°%d %s", ft_time_today2(philo), philosopher, str);
 }
 
-void	ft_my_usleep(t_philo *philo, unsigned long time_wait)
+void	ft_usleep(unsigned long time_wait)
 {
-	int waiting;
+	unsigned long waiting;
 
-	waiting = philo->data->time_today - (philo->data->time_today - time_wait);
-	while (waiting != 0)
-	{
+	waiting = ft_time_today();
+	while (ft_time_today() - waiting <= time_wait)
 		usleep(500);
-		waiting -= 5;
-	}
 }

@@ -52,18 +52,16 @@ void	take_fork(t_philo *philo)
 		pthread_mutex_lock(&philo->fork[0]);
 	else
 		pthread_mutex_lock(&philo->fork[philo->philo_n]);
-	print_status(convert_time(philo), philo->philo_n, "has taken a fork\n");
-	philo->data->time_today = ft_time_today();
+	print_status(philo, philo->philo_n, "has taken a fork\n");
 	if (philo->status == 1)
 		return ;
 	if (philo->data->philo_nbr == 1)
 	{
-		print_status(convert_time(philo), philo->philo_n, "is died\n");
+		print_status(philo, philo->philo_n, "is died\n");
 		exit(EXIT_SUCCESS);
 	}
 	pthread_mutex_lock(&philo->fork[philo->philo_n - 1]);
-	philo->data->time_today = ft_time_today();
-	print_status(convert_time(philo), philo->philo_n, "has taken a fork\n");
+	print_status(philo, philo->philo_n, "has taken a fork\n");
 }
 
 void	return_fork(t_philo *philo)

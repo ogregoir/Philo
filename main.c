@@ -11,19 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-/*
-void	ft_printf_struct(t_global *data, t_philo *philo)
-{
-	printf("DATA philo nbr %d\n", data->philo_nbr);
-	printf("DATA time_to_die %d\n", data->time_to_die);
-	printf("DATA time_to_eat %d\n", data->time_to_eat);
-	printf("DATA time_to_sleep %d\n", data->time_to_sleep);
-	printf("PHILO n %d\n", philo[0].philo_n);
-	printf("PHILO n %d\n", philo[1].philo_n);
-	printf("PHILO n %d\n", philo[2].philo_n);
-	printf("PHILO n %d\n", philo[3].philo_n);
-	printf("PHILO n %d\n", philo[4].philo_n);
-}*/
+
 int	philo_must_eat(t_philo *philo)
 {
 	int	i;
@@ -59,11 +47,9 @@ void	ft_dead(t_philo *philo)
 		{
 			if (philo->eat == 0)
 			{
-				if ((philo->last_meal + philo->data->time_to_die > philo->data->time_today))
+				if (ft_time_today2(philo) - philo[i].last_meal > philo->data->time_to_die)
 				{
-					usleep(20);
-					//philo->data->time_today = ft_time_today();
-					print_status(convert_time(philo), philo->philo_n, "is died\n");
+					print_status(philo, philo->philo_n, "is died\n");
 					philo->status = 1;
 					return ;
 				}
@@ -111,6 +97,5 @@ int	main(int argc, char **argv)
 	philo = ft_parse(data, philo);
 	create_philo(data, philo);
 	ft_dead(philo);	
-	//ft_printf_struct(data, philo);
 	return (0);
 }
