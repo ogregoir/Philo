@@ -56,7 +56,7 @@ void	print_status(t_philo *philo, int philosopher, char *str)
 
 void	ft_usleep(unsigned long time_wait)
 {
-	unsigned long waiting;
+	unsigned long	waiting;
 
 	waiting = ft_time_today();
 	while (ft_time_today() - waiting <= time_wait)

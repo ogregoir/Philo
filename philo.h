@@ -9,15 +9,14 @@
 /*   Updated: 2023/09/27 18:26:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #ifndef PHILO_H
 # define PHILO_H
 
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-#include <pthread.h>
-#include <sys/time.h>
+# include <pthread.h>
+# include <sys/time.h>
 # include "utils/libft/libft.h"
 
 typedef struct s_philo
@@ -30,8 +29,8 @@ typedef struct s_philo
 	int					must_eat;
 	int					status;
 	unsigned long		last_meal;
-	struct s_global 	*data;
-}t_philo;
+	struct s_global		*data;
+}	t_philo;
 
 typedef struct s_global
 {
@@ -42,23 +41,21 @@ typedef struct s_global
 	int					nbr_must_eat;
 	unsigned long		time_today;
 	unsigned long		time_to_start;
-}t_global;
+}	t_global;
 
-
-
-	/*UTILS*/
+/* UTILS */
 int				ft_verif_num(char **argv);
 unsigned long	ft_time_today(void);
 unsigned long	ft_time_today2(t_philo *philo);
 void			ft_usleep(unsigned long time_wait);
 
-	/*PARSE*/
+/* PARSE */
 t_philo			*ft_parse(t_global *data, t_philo *philo);
 void			create_philo(t_global *data, t_philo *philo);
 void			take_fork(t_philo *philo);
 void			return_fork(t_philo *philo);
 
-	/*ROUTINE*/
+/* ROUTINE */
 void			*start_routine(void *arg);
 
 void			print_status(t_philo *philo, int philosopher, char *str);

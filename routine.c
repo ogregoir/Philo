@@ -28,17 +28,17 @@ void	philo_eat(t_philo *philo)
 
 void	sleeping(t_philo *philo)
 {
-	if (philo->status == 1)
-		return ;
-	print_status(philo, philo->philo_n, "is sleeping\n");
-	ft_usleep(philo->data->time_to_sleep);
+	if (philo->status == 0)
+	{
+		print_status(philo, philo->philo_n, "is sleeping\n");
+		ft_usleep(philo->data->time_to_sleep);
+	}
 }
 
 void	thinking(t_philo *philo)
 {
-	if (philo->status == 1)
-		return ;
-	print_status(philo, philo->philo_n, "is thinking\n");
+	if (philo->status == 0)
+		print_status(philo, philo->philo_n, "is thinking\n");
 }
 
 void	*start_routine(void *arg)

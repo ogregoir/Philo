@@ -60,14 +60,26 @@ void	ft_dead(t_philo *philo)
 	return ;
 }
 
+void	ft_error(char *str)
+{
+	printf("%s\n", str);
+	exit(EXIT_SUCCESS);
+}
+
 int	ft_init(t_global *data, char **argv)
 {
+	if (argv[1][0] == '0')
+		ft_error("NO PHILO AROUND THE TABLE");
 	data->philo_nbr = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
 	if (argv[5] != NULL)
+	{
+		if (argv[5][0] == '0')
+			ft_error("PHILO MUST NOT EAT");
 		data->nbr_must_eat = ft_atoi(argv[5]);
+	}
 	else
 		data->nbr_must_eat = 0;
 	if (ft_verif_num(argv) == 1)
@@ -75,27 +87,22 @@ int	ft_init(t_global *data, char **argv)
 	return (0);
 }
 
-
 int	main(int argc, char **argv)
 {
 	t_global	*data;
 	t_philo		*philo;
 
 	if (argc < 5 || argc > 6)
-	{
-		printf("not enough arguments\n");
-		return (1);
-	}
+		ft_error("NOT ENOUGH ARGUMENTS");
 	data = malloc(sizeof(t_global));
 	data->time_to_start = ft_time_today();
 	if (ft_init(data, argv) == 1)
-	{
-		printf("an argument is not numeric\n");
-		return (1);
-	}
+		ft_error("AN ARGUMENT IS NOT NUMERIC");
 	philo = malloc(sizeof(t_philo) * (data->philo_nbr + 1));
 	philo = ft_parse(data, philo);
 	create_philo(data, philo);
-	ft_dead(philo);	
+	ft_dead(philo);
+	free(philo->data);
+	free(philo);
 	return (0);
 }

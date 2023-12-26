@@ -14,7 +14,7 @@
 
 t_philo	*ft_parse(t_global *data, t_philo *philo)
 {
-	int	i;
+	int				i;
 	pthread_mutex_t	*fork;
 
 	i = 0;

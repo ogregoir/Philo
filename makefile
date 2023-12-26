@@ -21,7 +21,7 @@ NAME	=	philo
 
 RM		=	rm -f
 
-CC		=	gcc
+CC		=	gcc -fsanitize=address -g
 
 CFLAGS	=	-Wall -Wextra -Werror
 
@@ -35,7 +35,7 @@ $(NAME)	:  $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) ${LIBS} -pthread -o $(NAME) 
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -pthread -c $< -o $@
 
 clean :
 	$(RM)   $(OBJS)
