@@ -21,9 +21,9 @@ NAME	=	philo
 
 RM		=	rm -f
 
-CC		=	gcc -fsanitize=address -g
+CC		=	gcc 
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -fsanitize=thread -g
 
 LIBFT	=	utils/libft/libft.a
 

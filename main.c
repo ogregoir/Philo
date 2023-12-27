@@ -89,8 +89,9 @@ int	ft_init(t_global *data, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_global	*data;
-	t_philo		*philo;
+	t_global		*data;
+	t_philo			*philo;
+	int				i = 0;
 
 	if (argc < 5 || argc > 6)
 		ft_error("NOT ENOUGH ARGUMENTS");
@@ -102,7 +103,13 @@ int	main(int argc, char **argv)
 	philo = ft_parse(data, philo);
 	create_philo(data, philo);
 	ft_dead(philo);
-	free(philo->data);
+	while (i < philo->data->philo_nbr)
+	{
+		pthread_mutex_destroy(philo[i].fork);
+		free(philo[i].fork);
+		i++;
+	}
+	free(data);
 	free(philo);
 	return (0);
 }
