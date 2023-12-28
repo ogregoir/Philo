@@ -15,32 +15,40 @@
 void	philo_eat(t_philo *philo)
 {
 	take_fork(philo);
+	pthread_mutex_lock(&philo->data->mutex_die);
 	if (philo->status == 1)
 		return ;
-	pthread_mutex_lock(philo->data->mutex_data);
-	philo->eat = 1;	
+	pthread_mutex_unlock(&philo->data->mutex_die);
+	pthread_mutex_lock(&philo->data->mutex_data);
+	philo->eat = 1;
 	philo->must_eat += 1;
-	pthread_mutex_unlock(philo->data->mutex_data);
+	pthread_mutex_unlock(&philo->data->mutex_data);
 	print_status(philo, philo->philo_n, "is eating\n");
 	ft_usleep(philo->data->time_to_eat);
-	philo->last_meal = ft_time_today2(philo);
+	//pthread_mutex_lock(&philo->data->mutex_data);
+//	philo->last_meal = ft_time_today2(philo);
+//	pthread_mutex_unlock(&philo->data->mutex_data);
 	philo->eat = 0;
 	return_fork(philo);
 }
 
 void	sleeping(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->mutex_die);
 	if (philo->status == 0)
 	{
 		print_status(philo, philo->philo_n, "is sleeping\n");
 		ft_usleep(philo->data->time_to_sleep);
 	}
+	pthread_mutex_unlock(&philo->data->mutex_die);
 }
 
 void	thinking(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->mutex_die);
 	if (philo->status == 0)
 		print_status(philo, philo->philo_n, "is thinking\n");
+	pthread_mutex_unlock(&philo->data->mutex_die);
 }
 
 void	*start_routine(void *arg)
@@ -57,4 +65,22 @@ void	*start_routine(void *arg)
 		thinking(philo);
 	}
 	return (NULL);
+}
+
+void ft_free_all(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->data->philo_nbr)
+	{
+		pthread_mutex_destroy(philo[i].fork);
+		free(philo[i].fork);
+		i++;
+	}
+	pthread_mutex_destroy(&philo->data->mutex_print);
+	pthread_mutex_destroy(&philo->data->mutex_data);
+	pthread_mutex_destroy(&philo->data->mutex_die);
+	free(philo->data);
+	free(philo);
 }

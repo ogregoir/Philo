@@ -41,18 +41,21 @@ void	ft_dead(t_philo *philo)
 	while (1)
 	{
 		i = 0;
-		if (philo_must_eat(philo) == 0)
-			break ;
+		//if (philo_must_eat(philo) == 0)
+		//	break ;
 		while (i < philo->data->philo_nbr)
 		{
 			if (philo->eat == 0)
 			{
+				pthread_mutex_lock(&philo->data->mutex_die);
 				if (ft_time_today2(philo) - philo[i].last_meal > philo->data->time_to_die)
 				{
 					print_status(philo, philo->philo_n, "is died\n");
 					philo->status = 1;
+					pthread_mutex_unlock(&philo->data->mutex_die);
 					return ;
 				}
+				pthread_mutex_unlock(&philo->data->mutex_die);
 			}
 			i++;
 		}
@@ -91,7 +94,6 @@ int	main(int argc, char **argv)
 {
 	t_global		*data;
 	t_philo			*philo;
-	int				i = 0;
 
 	if (argc < 5 || argc > 6)
 		ft_error("NOT ENOUGH ARGUMENTS");
@@ -103,13 +105,6 @@ int	main(int argc, char **argv)
 	philo = ft_parse(data, philo);
 	create_philo(data, philo);
 	ft_dead(philo);
-	while (i < philo->data->philo_nbr)
-	{
-		pthread_mutex_destroy(philo[i].fork);
-		free(philo[i].fork);
-		i++;
-	}
-	free(data);
-	free(philo);
+	//ft_free_all(philo);
 	return (0);
 }

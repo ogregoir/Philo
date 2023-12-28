@@ -14,16 +14,13 @@
 
 void	init_mutex(t_philo *philo)
 {
-	pthread_mutex_t	*data;
-	pthread_mutex_t	*print;
-
-	data = malloc(sizeof(pthread_mutex_t) * philo->data->philo_nbr);
-	print = malloc(sizeof(pthread_mutex_t) * philo->data->philo_nbr);
-	philo->data->mutex_data = data;
-	philo->data->mutex_print = print;
-	if (pthread_mutex_init(philo->data->mutex_data, NULL) != 0)
+	if (pthread_mutex_init(&philo->data->mutex_data, NULL) != 0)
 		ft_error("MUTEX DATA NOT INIT");
-	if (pthread_mutex_init(philo->data->mutex_print, NULL) != 0)
+	if (pthread_mutex_init(&philo->data->mutex_print, NULL) != 0)
+		ft_error("MUTEX PRINT NOT INIT");
+	if (pthread_mutex_init(&philo->data->mutex_die, NULL) != 0)
+		ft_error("MUTEX PRINT NOT INIT");
+	if (pthread_mutex_init(&philo->data->moove_status, NULL) != 0)
 		ft_error("MUTEX PRINT NOT INIT");
 }
 
@@ -69,8 +66,10 @@ void	take_fork(t_philo *philo)
 	else
 		pthread_mutex_lock(&philo->fork[philo->philo_n]);
 	print_status(philo, philo->philo_n, "has taken a fork\n");
+	pthread_mutex_lock(&philo->data->mutex_die);
 	if (philo->status == 1)
 		return ;
+	pthread_mutex_unlock(&philo->data->mutex_die);
 	if (philo->data->philo_nbr == 1)
 	{
 		print_status(philo, philo->philo_n, "is died\n");

@@ -40,8 +40,10 @@ typedef struct s_global
 	int					nbr_must_eat;
 	unsigned long		time_today;
 	unsigned long		time_to_start;
-	pthread_mutex_t		*mutex_data;
-	pthread_mutex_t		*mutex_print;
+	pthread_mutex_t		mutex_data;
+	pthread_mutex_t		mutex_print;
+	pthread_mutex_t		mutex_die;
+	pthread_mutex_t		moove_status;
 }	t_global;
 
 /* UTILS */
@@ -64,5 +66,6 @@ void			print_status(t_philo *philo, int philosopher, char *str);
 int				philo_die(t_philo *philo);
 
 int				philo_must_eat(t_philo *philo);
+void 			ft_free_all(t_philo *philo);
 
 #endif
