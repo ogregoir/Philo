@@ -21,10 +21,8 @@
 
 typedef struct s_philo
 {
-	struct s_philo		*next;
 	int					philo_n;
 	pthread_mutex_t		*fork;
-	//pthread_mutex_t		*msg;
 	pthread_t			thd;
 	int					eat;
 	int					must_eat;
@@ -42,6 +40,7 @@ typedef struct s_global
 	int					nbr_must_eat;
 	unsigned long		time_today;
 	unsigned long		time_to_start;
+	pthread_mutex_t		*mutex_data;
 }	t_global;
 
 /* UTILS */

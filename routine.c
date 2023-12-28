@@ -15,10 +15,12 @@
 void	philo_eat(t_philo *philo)
 {
 	take_fork(philo);
-	philo->must_eat += 1;
 	if (philo->status == 1)
 		return ;
-	philo->eat = 1;
+	pthread_mutex_lock(philo->data->mutex_data);
+	philo->eat = 1;	
+	philo->must_eat += 1;
+	pthread_mutex_unlock(philo->data->mutex_data);
 	print_status(philo, philo->philo_n, "is eating\n");
 	ft_usleep(philo->data->time_to_eat);
 	philo->last_meal = ft_time_today2(philo);

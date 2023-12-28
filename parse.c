@@ -48,7 +48,6 @@ void	create_philo(t_global *data, t_philo *philo)
 
 void	take_fork(t_philo *philo)
 {
-	printf("lock1 philo = %d\n", philo->philo_n);
 	if (philo->philo_n == philo->data->philo_nbr)
 		pthread_mutex_lock(&philo->fork[0]);
 	else
@@ -62,17 +61,14 @@ void	take_fork(t_philo *philo)
 		exit(EXIT_SUCCESS);
 	}
 	pthread_mutex_lock(&philo->fork[philo->philo_n - 1]);
-	printf("lock2 philo = %d\n", philo->philo_n - 1);
 	print_status(philo, philo->philo_n, "has taken a fork\n");
 }
 
 void	return_fork(t_philo *philo)
 {
-	printf("unlock1 philo = %d\n", philo->philo_n);
 	if (philo->philo_n == philo->data->philo_nbr)
 		pthread_mutex_unlock(&philo->fork[0]);
 	else
 		pthread_mutex_unlock(&philo->fork[philo->philo_n]);
-	printf("unlock2 philo = %d\n", philo->philo_n - 1);
 	pthread_mutex_unlock(&philo->fork[philo->philo_n - 1]);
 }
