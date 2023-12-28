@@ -20,8 +20,6 @@ void	init_mutex(t_philo *philo)
 		ft_error("MUTEX PRINT NOT INIT");
 	if (pthread_mutex_init(&philo->data->mutex_die, NULL) != 0)
 		ft_error("MUTEX PRINT NOT INIT");
-	if (pthread_mutex_init(&philo->data->moove_status, NULL) != 0)
-		ft_error("MUTEX PRINT NOT INIT");
 }
 
 t_philo	*ft_parse(t_global *data, t_philo *philo)

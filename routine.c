@@ -25,9 +25,9 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->mutex_data);
 	print_status(philo, philo->philo_n, "is eating\n");
 	ft_usleep(philo->data->time_to_eat);
-	//pthread_mutex_lock(&philo->data->mutex_data);
-//	philo->last_meal = ft_time_today2(philo);
-//	pthread_mutex_unlock(&philo->data->mutex_data);
+	pthread_mutex_lock(&philo->data->mutex_data);
+	philo->last_meal = ft_time_today2(philo);
+	pthread_mutex_unlock(&philo->data->mutex_data);
 	philo->eat = 0;
 	return_fork(philo);
 }

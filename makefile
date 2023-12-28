@@ -23,7 +23,7 @@ RM		=	rm -f
 
 CC		=	gcc 
 
-CFLAGS	=	-Wall -Wextra -Werror -fsanitize=thread -g
+CFLAGS	=	-Wall -Wextra -Werror
 
 LIBFT	=	utils/libft/libft.a
 

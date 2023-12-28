@@ -43,7 +43,6 @@ typedef struct s_global
 	pthread_mutex_t		mutex_data;
 	pthread_mutex_t		mutex_print;
 	pthread_mutex_t		mutex_die;
-	pthread_mutex_t		moove_status;
 }	t_global;
 
 /* UTILS */
