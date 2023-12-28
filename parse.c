@@ -12,6 +12,21 @@
 
 #include "philo.h"
 
+void	init_mutex(t_philo *philo)
+{
+	pthread_mutex_t	*data;
+	pthread_mutex_t	*print;
+
+	data = malloc(sizeof(pthread_mutex_t) * philo->data->philo_nbr);
+	print = malloc(sizeof(pthread_mutex_t) * philo->data->philo_nbr);
+	philo->data->mutex_data = data;
+	philo->data->mutex_print = print;
+	if (pthread_mutex_init(philo->data->mutex_data, NULL) != 0)
+		ft_error("MUTEX DATA NOT INIT");
+	if (pthread_mutex_init(philo->data->mutex_print, NULL) != 0)
+		ft_error("MUTEX PRINT NOT INIT");
+}
+
 t_philo	*ft_parse(t_global *data, t_philo *philo)
 {
 	int				i;
@@ -31,6 +46,7 @@ t_philo	*ft_parse(t_global *data, t_philo *philo)
 		philo[i].must_eat = 0;
 		i++;
 	}
+	init_mutex(philo);
 	return (philo);
 }
 

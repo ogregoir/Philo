@@ -41,6 +41,7 @@ typedef struct s_global
 	unsigned long		time_today;
 	unsigned long		time_to_start;
 	pthread_mutex_t		*mutex_data;
+	pthread_mutex_t		*mutex_print;
 }	t_global;
 
 /* UTILS */
@@ -48,6 +49,7 @@ int				ft_verif_num(char **argv);
 unsigned long	ft_time_today(void);
 unsigned long	ft_time_today2(t_philo *philo);
 void			ft_usleep(unsigned long time_wait);
+void			ft_error(char *str);
 
 /* PARSE */
 t_philo			*ft_parse(t_global *data, t_philo *philo);

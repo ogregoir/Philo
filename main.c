@@ -68,8 +68,6 @@ void	ft_error(char *str)
 
 int	ft_init(t_global *data, char **argv)
 {
-	if (pthread_mutex_init(data->mutex_data, NULL) != 0)
-		ft_error("MUTEX NOT INIT");
 	if (argv[1][0] == '0')
 		ft_error("NO PHILO AROUND THE TABLE");
 	data->philo_nbr = ft_atoi(argv[1]);
