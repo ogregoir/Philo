@@ -16,6 +16,8 @@ void	init_mutex(t_philo *philo)
 {
 	if (pthread_mutex_init(&philo->mutex_print, NULL) != 0)
 		ft_error("MUTEX DATA NOT INIT");
+	if (pthread_mutex_init(&philo->data->mutex_die, NULL) != 0)
+		ft_error("MUTEX DATA NOT INIT");
 }
 
 t_philo	*ft_parse(t_global *data, t_philo *philo)
@@ -30,7 +32,6 @@ t_philo	*ft_parse(t_global *data, t_philo *philo)
 	while (i < data->philo_nbr)
 	{
 		philo[i].data = data;
-		philo[i].status = 0;
 		philo[i].fork = fork;
 		philo[i].mutex_data = temp;
 		pthread_mutex_init(&fork[i], NULL);
@@ -55,6 +56,13 @@ void	create_philo(t_global *data, t_philo *philo)
 		pthread_create(&philo[i].thd, NULL, start_routine, philo + i);
 		i++;
 	}
+	ft_dead(philo);
+	i = 0;
+	while (i < data->philo_nbr)
+	{
+		pthread_join(philo[i].thd, NULL);
+		i++;
+	}
 }
 
 void	take_fork(t_philo *philo)
@@ -64,13 +72,8 @@ void	take_fork(t_philo *philo)
 	else
 		pthread_mutex_lock(&philo->fork[philo->philo_n]);
 	print_status(philo, philo->philo_n, "has taken a fork\n");
-	if (philo->status == 1)
-		return ;
 	if (philo->data->philo_nbr == 1)
-	{
-		print_status(philo, philo->philo_n, "is died\n");
 		exit(EXIT_SUCCESS);
-	}
 	pthread_mutex_lock(&philo->fork[philo->philo_n - 1]);
 	print_status(philo, philo->philo_n, "has taken a fork\n");
 }

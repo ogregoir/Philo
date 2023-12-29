@@ -52,7 +52,10 @@ unsigned long	ft_time_today2(t_philo *philo)
 void	print_status(t_philo *philo, int philosopher, char *str)
 {
 	pthread_mutex_lock(&philo->mutex_print);
-	printf("%lu philo n°%d %s", ft_time_today2(philo), philosopher, str);
+	pthread_mutex_lock(&philo->data->mutex_die);
+	if (philo->data->status != 1)
+		printf("%lu philo n°%d %s", ft_time_today2(philo), philosopher, str);
+	pthread_mutex_unlock(&philo->data->mutex_die);
 	pthread_mutex_unlock(&philo->mutex_print);
 }
 

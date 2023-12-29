@@ -19,17 +19,23 @@ int	philo_must_eat(t_philo *philo)
 
 	i = 0;
 	count = 0;
-	
 	if (philo->data->nbr_must_eat != 0)
 	{
 		while (philo->data->philo_nbr > i)
 		{
-			if (philo->data->nbr_must_eat == philo->must_eat)
+			pthread_mutex_lock(philo->mutex_data);
+			if (philo->data->nbr_must_eat <= philo[i].must_eat)
 				count++;
+			pthread_mutex_unlock(philo->mutex_data);
 			i++;
 		}
 		if (philo->data->philo_nbr == count)
+		{
+			pthread_mutex_lock(&philo->data->mutex_die);
+			philo->data->status = 1;
+			pthread_mutex_unlock(&philo->data->mutex_die);
 			return (0);
+		}
 	}
 	return (1);
 }
@@ -38,7 +44,6 @@ void	ft_dead(t_philo *philo)
 {
 	int	i;
 
-	i = 0;
 	while (1)
 	{
 		i = 0;
@@ -46,15 +51,17 @@ void	ft_dead(t_philo *philo)
 			break ;
 		while (i < philo->data->philo_nbr)
 		{
+			pthread_mutex_lock(philo->mutex_data);
 			if (philo->eat == 0)
 			{
-				if (ft_time_today2(philo) - philo[i].last_meal > philo->data->time_to_die)
+				if (ft_time_today2(philo) - philo[i].last_meal \
+					> philo->data->time_to_die)
 				{
-					print_status(philo, philo->philo_n, "is died\n");
-					philo->status = 1;
+					ft_if(philo);
 					return ;
 				}
 			}
+			pthread_mutex_unlock(philo->mutex_data);
 			i++;
 		}
 	}
@@ -71,6 +78,7 @@ int	ft_init(t_global *data, char **argv)
 {
 	if (argv[1][0] == '0')
 		ft_error("NO PHILO AROUND THE TABLE");
+	data->status = 0;
 	data->philo_nbr = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
@@ -103,6 +111,6 @@ int	main(int argc, char **argv)
 	philo = ft_parse(data, philo);
 	create_philo(data, philo);
 	ft_dead(philo);
-	//ft_free_all(philo);
+	ft_free_all(philo, data);
 	return (0);
 }

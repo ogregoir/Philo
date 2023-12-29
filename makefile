@@ -14,6 +14,7 @@ SRCS	=	main.c \
 			routine.c \
 			parse.c \
 			utils/utils.c \
+			utils/utils2.c \
 			
 OBJS	=	$(SRCS:.c=.o)
 
@@ -23,30 +24,23 @@ RM		=	rm -f
 
 CC		=	gcc 
 
-CFLAGS	=	-Wall -Wextra -Werror -fsanitize=thread
-
-LIBFT	=	utils/libft/libft.a
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=thread
 
 #-------------------------------------------#
 
 all		:	$(NAME)
 
-$(NAME)	:  $(LIBFT) $(OBJS) 
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) ${LIBS} -pthread -o $(NAME) 
+$(NAME)	: $(OBJS) 
+	$(CC) $(CFLAGS) $(OBJS) -pthread -o $(NAME) 
 
 %.o: %.c
 	$(CC) $(CFLAGS) -pthread -c $< -o $@
 
 clean :
 	$(RM)   $(OBJS)
-	make	clean -C utils/libft
 
 fclean : clean
 	$(RM) $(NAME)
-	$(RM) $(LIBFT)
-	make fclean -C utils/libft
-
-$(LIBFT) :
-	make -C utils/libft
+	$(RM)
 
 re	: fclean all

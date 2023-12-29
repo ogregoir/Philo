@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include "utils/libft/libft.h"
 
 typedef struct s_philo
 {
@@ -26,7 +25,6 @@ typedef struct s_philo
 	pthread_t			thd;
 	int					eat;
 	int					must_eat;
-	int					status;
 	unsigned long		last_meal;
 	pthread_mutex_t		*mutex_data;
 	pthread_mutex_t		mutex_print;
@@ -35,6 +33,8 @@ typedef struct s_philo
 
 typedef struct s_global
 {
+	int					status;
+	pthread_mutex_t		mutex_die;
 	int					philo_nbr;
 	unsigned long		time_to_die;
 	unsigned long		time_to_eat;
@@ -52,6 +52,11 @@ unsigned long	ft_time_today2(t_philo *philo);
 void			ft_usleep(unsigned long time_wait);
 void			ft_error(char *str);
 
+int				ft_atoi(char *str);
+int				ft_isdigit(int i);
+void			ft_free_all(t_philo *philo, t_global *data);
+void			ft_if(t_philo *philo);
+
 /* PARSE */
 t_philo			*ft_parse(t_global *data, t_philo *philo);
 void			create_philo(t_global *data, t_philo *philo);
@@ -63,8 +68,7 @@ void			*start_routine(void *arg);
 
 void			print_status(t_philo *philo, int philosopher, char *str);
 int				philo_die(t_philo *philo);
-
+void			ft_dead(t_philo *philo);
 int				philo_must_eat(t_philo *philo);
-void 			ft_free_all(t_philo *philo);
 
 #endif
