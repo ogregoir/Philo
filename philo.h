@@ -28,6 +28,8 @@ typedef struct s_philo
 	int					must_eat;
 	int					status;
 	unsigned long		last_meal;
+	pthread_mutex_t		*mutex_data;
+	pthread_mutex_t		mutex_print;
 	struct s_global		*data;
 }	t_philo;
 
@@ -40,9 +42,7 @@ typedef struct s_global
 	int					nbr_must_eat;
 	unsigned long		time_today;
 	unsigned long		time_to_start;
-	pthread_mutex_t		mutex_data;
-	pthread_mutex_t		mutex_print;
-	pthread_mutex_t		mutex_die;
+
 }	t_global;
 
 /* UTILS */

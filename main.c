@@ -19,6 +19,7 @@ int	philo_must_eat(t_philo *philo)
 
 	i = 0;
 	count = 0;
+	
 	if (philo->data->nbr_must_eat != 0)
 	{
 		while (philo->data->philo_nbr > i)
@@ -47,17 +48,12 @@ void	ft_dead(t_philo *philo)
 		{
 			if (philo->eat == 0)
 			{
-				pthread_mutex_lock(&philo->data->mutex_data);
 				if (ft_time_today2(philo) - philo[i].last_meal > philo->data->time_to_die)
 				{
 					print_status(philo, philo->philo_n, "is died\n");
-					pthread_mutex_lock(&philo->data->mutex_die);
 					philo->status = 1;
-					pthread_mutex_unlock(&philo->data->mutex_die);
-					pthread_mutex_unlock(&philo->data->mutex_data);
 					return ;
 				}
-				pthread_mutex_unlock(&philo->data->mutex_data);
 			}
 			i++;
 		}
